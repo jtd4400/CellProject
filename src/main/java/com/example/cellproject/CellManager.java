@@ -35,7 +35,7 @@ public class CellManager {
                     cells[row][col] = getNeighborColor(col, row);
                 }
                 //If cell has < 2 or > 3 neighbors, it dies and becomes empty
-                if (!cells[row][col].isEmpty() && (countNeighbors(col, row) < 2 || countNeighbors(col, row) > 3 ){
+                if (!cells[row][col].isEmpty() && (countNeighbors(col, row) < 2 || countNeighbors(col, row) > 3 )){
                     cells[row][col] = "";
                 }
             }
