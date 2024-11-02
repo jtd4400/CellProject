@@ -1,9 +1,8 @@
-package com.example.cellproject;
-
+package cell_project_dir;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -11,7 +10,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class CellApplication extends Application{
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("Cell Simulation");
@@ -25,18 +24,15 @@ public class HelloApplication extends Application {
         gp.setMaxHeight(150);
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
-                Label l = new Label("");
+                Label l = new Label();
                 l.setBackground(Color.RED);
                 l.setBounds(15,15,15,15);
-                gp.add(l, i, j);
-
             }
         }
         Scene scene = new Scene(bp);
         stage.setScene(scene);
         stage.show();
     }
-
     public static void main(String[] args) {
         launch();
     }
