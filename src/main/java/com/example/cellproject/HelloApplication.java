@@ -13,54 +13,49 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
-
 import java.io.IOException;
 
 public class HelloApplication extends Application {
     private Label[][] grid;
     private int activeCells;
-    private int redCt;
-    private int blueCt;
-    private int greenCt;
+
+    private final int gridWidth = 20;
+    private final int gridHeight = 20;
 
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("Cell Simulation");
-        this.grid = new Label[15][15];
+        this.grid = new Label[gridWidth][gridHeight];
         stage.setWidth(stage.getWidth());
         stage.setHeight(stage.getHeight());
         BorderPane bp = new BorderPane();
         GridPane gp = new GridPane();
+        CellManager cm = new CellManager(30);
         gp.setHgap(1);
         gp.setVgap(1);
         gp.setMaxWidth(150);
         gp.setMaxHeight(150);
-        for (int r = 0; r < 15; r++) {
-            for (int c = 0; c < 15; c++) {
-                Label l = new Label("");
-                l.setMinSize(10,10);
-                l.setBackground(Background.fill(Color.RED));
+
+        for (int r = 0; r < gridWidth; r++) {
+            for (int c = 0; c < gridHeight; c++) {
+                Label l = cm.ParseStringToLabel(r, c);
                 gp.add(l, c, r);
                 grid[c][r] = l;
-
             }
         }
         bp.setCenter(gp);
         GridPane dis_info = new GridPane();
         dis_info.setHgap(1);
         dis_info.setVgap(5);
-        redCt = 0;
-        blueCt = 0;
-        greenCt = 0;
-        Label rc = new Label("Red Cells: " + redCt);
+        Label rc = new Label("Red Cells: " + cm.getRedCount());
         rc.setStyle( """
                             -fx-text-fill: white;
                 """);
-        Label bl = new Label("Blue Cells: " + blueCt);
+        Label bl = new Label("Blue Cells: " + cm.getBlueCount());
         bl.setStyle( """
                             -fx-text-fill: white;
                 """);
-        Label green = new Label("Green Cells: " + greenCt);
+        Label green = new Label("Green Cells: " + cm.getGreenCount());
         green.setStyle( """
                             -fx-text-fill: white;
                 """);
@@ -93,7 +88,6 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(bp);
         stage.setScene(scene);
         stage.show();
-
     }
 
     public static void main(String[] args) {
