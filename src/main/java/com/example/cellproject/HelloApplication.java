@@ -14,23 +14,24 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class HelloApplication extends Application {
-    private Label[][] grid;
+    static Label[][] grid;
     private int activeCells;
 
     private final int gridWidth = 20;
     private final int gridHeight = 20;
+    static CellManager cm = new CellManager(30);
 
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("Cell Simulation");
-        this.grid = new Label[gridWidth][gridHeight];
+        grid = new Label[gridWidth][gridHeight];
         stage.setWidth(stage.getWidth());
         stage.setHeight(stage.getHeight());
         BorderPane bp = new BorderPane();
         GridPane gp = new GridPane();
-        CellManager cm = new CellManager(30);
         gp.setHgap(1);
         gp.setVgap(1);
         gp.setMaxWidth(150);

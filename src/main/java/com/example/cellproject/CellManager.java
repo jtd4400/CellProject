@@ -74,7 +74,7 @@ public class CellManager {
     private String getNeighborColor(int col, int row) {
         for(int i = -1; i < 2; i++){
             for (int j = -1; j < 2; j++){
-                if (!cells[col + i][row + j].isEmpty()){
+                if (!cells[col + i][row + j].isEmpty() && cells[col + i][row + j] != null){
                     return cells[col + i][row + j];
                 }
             }
@@ -82,7 +82,7 @@ public class CellManager {
         return "";
     }
 
-    public void AdvanceGeneration() {
+    public Label[][] AdvanceGeneration(Label[][] cellGrid) {
         for (int row = 0; row < cells.length; row++) {
             for (int col = 0; col < cells[row].length; col++) {
                 //If empty, make a new cell with the neighbor's color
@@ -95,6 +95,8 @@ public class CellManager {
                 }
             }
         }
+
+        return UpdateGrid(cellGrid);
     }
 
     public void RandomlyKillHalf(){
@@ -125,6 +127,7 @@ public class CellManager {
             }
         }
     }
+
     //region Converting To Labels
     public Label ParseStringToLabel(int row, int col) {
         if (cells[row][col] == null) return null;
@@ -150,6 +153,15 @@ public class CellManager {
                 return Color.DARKGRAY;
             }
         }
+    }
+
+    public Label[][] UpdateGrid(Label[][] grid) {
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                grid[r][c] = ParseStringToLabel(r, c);
+            }
+        }
+        return grid;
     }
     //endregion
 }
