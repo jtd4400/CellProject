@@ -92,6 +92,13 @@ public class HelloApplication extends Application {
         leftButtons.add(choiceLabel,0,0);
         leftButtons.add(b2,0,1);
         GridPane left2 = new GridPane();
+        Button reset = new Button("Reset");
+        reset.setMinSize(400,50);
+        reset.setStyle("""
+                            -fx-text-fill: black;
+                            -fx-font-size: 40;
+                """);
+        reset.setOnAction(event -> cm.RandomizeLayout());
         Button b1 = new Button("Randomly Kill Half");
         b1.setMinSize(400,50);
         b1.setStyle("""
@@ -109,8 +116,9 @@ public class HelloApplication extends Application {
                 """);
         starter.setMinSize(400,50);
         left2.setHgap(5);
-        left2.add(b1,0,0);
-        left2.add(starter, 0, 1);
+        left2.add(reset,0,0);
+        left2.add(b1,0,1);
+        left2.add(starter, 0, 2);
         left1.setTop(dis_info);
         left1.setCenter(leftButtons);
         left1.setBottom(left2);
