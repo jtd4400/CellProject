@@ -36,6 +36,7 @@ public class HelloApplication extends Application {
         stage.setWidth(stage.getWidth());
         stage.setHeight(stage.getHeight());
         BorderPane bp = new BorderPane();
+        bp.setBackground(Background.fill(Color.DIMGRAY));
         gp = new GridPane();
         gp.setHgap(1);
         gp.setVgap(1);
