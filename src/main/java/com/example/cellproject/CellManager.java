@@ -39,41 +39,43 @@ public class CellManager {
 
     public void RandomizeLayout(){
         int cellCount = this.cellCount;
-        while (cellCount > 0){
+        do {
             for (int row = 0; row < cells.length; row++) {
                 for (int col = 0; col < cells[row].length; col++) {
-                    long randomNumber = Math.round(Math.random() * 1000);
-                    if ((cells[row][col] == null || cells[row][col].isEmpty()) && randomNumber <= 30){
-                        cells[row][col] = "Red";
-                        redCount++;
-                        cellCount--;
-                    }
-                    else if ((cells[row][col] == null || cells[row][col].isEmpty()) && randomNumber <= 60){
-                        cells[row][col] = "Green";
-                        greenCount++;
-                        cellCount--;
-                    }
-                    else if ((cells[row][col] == null || cells[row][col].isEmpty()) && randomNumber <= 90){
-                        cells[row][col] = "Blue";
-                        blueCount++;
-                        cellCount--;
-                    }
-                    else if (cells[row][col] == null){
+                    if (cells[row][col] == null){
                         cells[row][col] = "";
                     }
-                    if (cellCount == 0) return;
+                    if (cellCount > 0){
+                        long randomNumber = Math.round(Math.random() * 1000);
+                        if (randomNumber <= 30){
+                            cells[row][col] = "Red";
+                            redCount++;
+                            cellCount--;
+                        }
+                        else if (randomNumber <= 60){
+                            cells[row][col] = "Green";
+                            greenCount++;
+                            cellCount--;
+                        }
+                        else if (randomNumber <= 90){
+                            cells[row][col] = "Blue";
+                            blueCount++;
+                            cellCount--;
+                        }
+                    }
                 }
             }
-        }
+        } while (cellCount > 0);
     }
 
     private int countNeighbors(int col, int row) {
         int neighbors = 0;
         for(int i = -1; i < 2; i++){
-            for (int j = -1; j < 2; j++){
-                if (row > 0 && col > 0 && row < 19 && col < 19
-                && !cells[col + i][row + j].isEmpty()){
-                    neighbors++;
+            if (row + i >= 0 && row + i <= 19){
+                for (int j = -1; j < 2; j++){
+                    if (col + j >= 0 && col + j <= 19 && !cells[row + i][col + j].isEmpty() && !(i == 0 && j == 0)){
+                        neighbors++;
+                    }
                 }
             }
         }
@@ -82,28 +84,34 @@ public class CellManager {
 
     private String getNeighborColor(int col, int row) {
         for(int i = -1; i < 2; i++){
-            for (int j = -1; j < 2; j++){
-                if (!cells[col + i][row + j].isEmpty() && cells[col + i][row + j] != null){
-                    return cells[col + i][row + j];
+            if (row + i >= 0 && row + i <= 19){
+                for (int j = -1; j < 2; j++){
+                    if (col + j >= 0 && col + j <= 19 && !cells[row + i][col + j].isEmpty() && cells[row + i][col + j] != null){
+                        return cells[row + i][col + j];
+                    }
                 }
             }
+
         }
         return "";
     }
 
     public void AdvanceGeneration() {
+        String[][] newGrid = new String[20][20];
         for (int row = 0; row < cells.length; row++) {
             for (int col = 0; col < cells[row].length; col++) {
+                newGrid[row][col] = cells[row][col];
                 //If empty, make a new cell with the neighbor's color
                 if (cells[row][col].isEmpty() && countNeighbors(col, row) == 3){
-                    cells[row][col] = getNeighborColor(col, row);
+                    newGrid[row][col] = getNeighborColor(col, row);
                 }
                 //If cell has < 2 or > 3 neighbors, it dies and becomes empty
                 if (!cells[row][col].isEmpty() && (countNeighbors(col, row) < 2 || countNeighbors(col, row) > 3 )){
-                    cells[row][col] = "";
+                    newGrid[row][col] = "";
                 }
             }
         }
+        cells = newGrid;
         app.update();
     }
 
