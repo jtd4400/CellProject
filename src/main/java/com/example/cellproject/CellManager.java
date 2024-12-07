@@ -49,23 +49,26 @@ public class CellManager {
                         long randomNumber = Math.round(Math.random() * 1000);
                         if (randomNumber <= 30){
                             cells[row][col] = "Red";
-                            redCount++;
                             cellCount--;
                         }
                         else if (randomNumber <= 60){
                             cells[row][col] = "Green";
-                            greenCount++;
                             cellCount--;
                         }
                         else if (randomNumber <= 90){
                             cells[row][col] = "Blue";
-                            blueCount++;
                             cellCount--;
                         }
                     }
                 }
             }
         } while (cellCount > 0);
+        SetColorCounts();
+    }
+
+    public void ResetLayout() {
+        RandomizeLayout();
+        this.app.update();
     }
 
     private int countNeighbors(int col, int row) {
@@ -116,34 +119,51 @@ public class CellManager {
     }
 
     public void RandomlyKillHalf(){
+        if (cellCount < 2) {
+            this.app.update();
+            return;
+        }
         int killCount = cellCount / 2;
         while (killCount > 0){
             for (int row = 0; row < cells.length; row++) {
                 for (int col = 0; col < cells[row].length; col++) {
                     long randomNumber = Math.round(Math.random() * 2);
-                    if (randomNumber <= 1){
-                        switch (cells[row][col]){
-                            case "Red":
-                                redCount--;
-                                break;
-                            case "Green":
-                                greenCount--;
-                                break;
-                            case "Blue":
-                                blueCount--;
-                                break;
-                            default:
-                                break;
-                        }
+                    if (randomNumber <= 1 && !cells[row][col].isEmpty()){
                         cells[row][col] = "";
                         cellCount--;
                         killCount--;
+                    }
+                    if (killCount == 0){
+                        this.app.update();
+                        return;
                     }
                 }
             }
         }
         this.app.update();
+    }
 
+    public void SetColorCounts() {
+        redCount = 0;
+        greenCount = 0;
+        blueCount = 0;
+        for (String[] cell : cells) {
+            for (String s : cell) {
+                switch (s) {
+                    case "Red":
+                        redCount++;
+                        break;
+                    case "Green":
+                        greenCount++;
+                        break;
+                    case "Blue":
+                        blueCount++;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     //region Converting To Labels
