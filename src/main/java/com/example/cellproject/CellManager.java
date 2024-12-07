@@ -3,6 +3,7 @@ package com.example.cellproject;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
+import java.util.Observer;
 
 import java.util.Dictionary;
 
@@ -26,34 +27,41 @@ public class CellManager {
     public int getBlueCount() {
         return blueCount;
     }
+    public HelloApplication app;
     //endregion
 
-    public CellManager(int cellCount) {
+
+    public CellManager(int cellCount, HelloApplication app) {
         this.cellCount = cellCount;
+        this.app = app;
         RandomizeLayout();
     }
 
     public void RandomizeLayout(){
         int cellCount = this.cellCount;
-        for (int row = 0; row < cells.length; row++) {
-            for (int col = 0; col < cells[row].length; col++) {
-                long randomNumber = Math.round(Math.random() * 1000);
-                cellCount--;
-                if (cellCount > 0 && randomNumber <= 30){
-                    cells[row][col] = "Red";
-                    redCount++;
-                }
-                else if (cellCount > 0 && randomNumber <= 60){
-                    cells[row][col] = "Green";
-                    greenCount++;
-                }
-                else if (cellCount > 0 && randomNumber <= 90){
-                    cells[row][col] = "Blue";
-                    blueCount++;
-                }
-                else {
-                    cells[row][col] = "";
-                    if (cellCount < this.cellCount) cellCount++;
+        while (cellCount > 0){
+            for (int row = 0; row < cells.length; row++) {
+                for (int col = 0; col < cells[row].length; col++) {
+                    long randomNumber = Math.round(Math.random() * 1000);
+                    if ((cells[row][col] == null || cells[row][col].isEmpty()) && randomNumber <= 30){
+                        cells[row][col] = "Red";
+                        redCount++;
+                        cellCount--;
+                    }
+                    else if ((cells[row][col] == null || cells[row][col].isEmpty()) && randomNumber <= 60){
+                        cells[row][col] = "Green";
+                        greenCount++;
+                        cellCount--;
+                    }
+                    else if ((cells[row][col] == null || cells[row][col].isEmpty()) && randomNumber <= 90){
+                        cells[row][col] = "Blue";
+                        blueCount++;
+                        cellCount--;
+                    }
+                    else if (cells[row][col] == null){
+                        cells[row][col] = "";
+                    }
+                    if (cellCount == 0) return;
                 }
             }
         }
@@ -63,7 +71,8 @@ public class CellManager {
         int neighbors = 0;
         for(int i = -1; i < 2; i++){
             for (int j = -1; j < 2; j++){
-                if (!cells[col + i][row + j].isEmpty()){
+                if (row > 0 && col > 0 && row < 19 && col < 19
+                && !cells[col + i][row + j].isEmpty()){
                     neighbors++;
                 }
             }
@@ -82,7 +91,7 @@ public class CellManager {
         return "";
     }
 
-    public Label[][] AdvanceGeneration(Label[][] cellGrid) {
+    public void AdvanceGeneration() {
         for (int row = 0; row < cells.length; row++) {
             for (int col = 0; col < cells[row].length; col++) {
                 //If empty, make a new cell with the neighbor's color
@@ -95,8 +104,7 @@ public class CellManager {
                 }
             }
         }
-
-        return UpdateGrid(cellGrid);
+        app.update();
     }
 
     public void RandomlyKillHalf(){
@@ -126,6 +134,8 @@ public class CellManager {
                 }
             }
         }
+        this.app.update();
+
     }
 
     //region Converting To Labels
