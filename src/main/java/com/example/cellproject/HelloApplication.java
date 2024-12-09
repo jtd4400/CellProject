@@ -27,7 +27,7 @@ public class HelloApplication extends Application {
     private Label green;
     private Button starter;
     private Button ender;
-    CellManager cm = new CellManager(60, this);
+    CellManager cm = new CellManager(gridWidth, gridHeight, 60, this);
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -98,7 +98,7 @@ public class HelloApplication extends Application {
                             -fx-text-fill: black;
                             -fx-font-size: 40;
                 """);
-        reset.setOnAction(event -> cm.RandomizeLayout());
+        reset.setOnAction(event -> cm.ResetLayout());
         Button b1 = new Button("Randomly Kill Half");
         b1.setMinSize(400,50);
         b1.setStyle("""
