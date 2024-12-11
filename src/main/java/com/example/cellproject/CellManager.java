@@ -13,6 +13,7 @@ public class CellManager {
     int cellCount;
     int startingCellCount;
     int redCount, greenCount, blueCount;
+    Color backgroundColor = Color.DARKGRAY;
 
     //region Getters
     public int getRedCount() {
@@ -128,7 +129,7 @@ public class CellManager {
         app.update();
     }
 
-    public void RandomlyKillHalf(){
+    public void RandomlyKillHalf(String color){
         if (cellCount < 2) {
             this.app.update();
             return;
@@ -138,7 +139,7 @@ public class CellManager {
             for (int row = 0; row < cells.length; row++) {
                 for (int col = 0; col < cells[row].length; col++) {
                     long randomNumber = Math.round(Math.random() * 2);
-                    if (randomNumber <= 1 && !cells[row][col].isEmpty()){
+                    if (randomNumber <= 1 && !cells[row][col].isEmpty() && !cells[row][col].equals(color)){
                         cells[row][col] = "";
                         cellCount--;
                         killCount--;
@@ -152,6 +153,11 @@ public class CellManager {
             }
         }
         SetColorCounts();
+        this.app.update();
+    }
+
+    public void SetBackgroundColor(Color color){
+        backgroundColor = color;
         this.app.update();
     }
 
@@ -200,7 +206,7 @@ public class CellManager {
                 return Color.GREEN;
             }
             default -> {
-                return Color.DARKGRAY;
+                return backgroundColor;
             }
         }
     }
