@@ -1,6 +1,9 @@
 package com.example.cellproject;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,6 +30,8 @@ public class HelloApplication extends Application {
     private Label green;
     private Button starter;
     private Button ender;
+    private String bgcol;
+    private BorderPane bp;
     CellManager cm = new CellManager(gridWidth, gridHeight, 60, this);
 
     @Override
@@ -35,8 +40,9 @@ public class HelloApplication extends Application {
         grid = new Label[gridWidth][gridHeight];
         stage.setWidth(stage.getWidth());
         stage.setHeight(stage.getHeight());
-        BorderPane bp = new BorderPane();
-        bp.setBackground(Background.fill(Color.DIMGRAY));
+        bp = new BorderPane();
+        bp.setBackground(Background.fill(cm.backgroundColor));
+        bgcol = cm.backgroundColor.toString();
         gp = new GridPane();
         gp.setHgap(1);
         gp.setVgap(1);
@@ -87,7 +93,16 @@ public class HelloApplication extends Application {
                             -fx-text-fill: white;
                             -fx-font-size: 40;
                 """);
-        ChoiceBox<String> b2 = new ChoiceBox<>();
+        String sarr[] = {"None", "Red", "Blue", "Green"};
+        ChoiceBox<String> b2 = new ChoiceBox<>(FXCollections.observableArrayList(sarr));
+        b2.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue ov, Number value, Number new_value)
+            {
+                cm.SetBackgroundColor(cm.StringToColor(sarr[new_value.intValue()]));
+                bgcol = sarr[new_value.intValue()];
+
+            }
+        });
         b2.setMinSize(100, 50);
         leftButtons.add(choiceLabel,0,0);
         leftButtons.add(b2,0,1);
@@ -129,7 +144,7 @@ public class HelloApplication extends Application {
     }
 
     public void killHalf() {
-        cm.RandomlyKillHalf();
+        cm.RandomlyKillHalf(bgcol);
         grid = cm.UpdateGrid(grid);
     }
 
@@ -146,6 +161,7 @@ public class HelloApplication extends Application {
         rc.setText(String.valueOf("Red Cells: " + cm.getRedCount()));
         bl.setText(String.valueOf("Blue Cells: " + cm.getBlueCount()));
         green.setText(String.valueOf("Green Cells: " + cm.getGreenCount()));
+        bp.setBackground(Background.fill(cm.backgroundColor));
     }
 
     public static void main(String[] args) {

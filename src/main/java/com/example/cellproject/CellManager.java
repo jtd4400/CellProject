@@ -194,7 +194,7 @@ public class CellManager {
         return l;
     }
 
-    private Color StringToColor(String color) {
+    public Color StringToColor(String color) {
         switch (color) {
             case "Red" -> {
                 return Color.RED;
@@ -204,6 +204,9 @@ public class CellManager {
             }
             case "Green" -> {
                 return Color.GREEN;
+            }
+            case "None" -> {
+                return Color.DARKGRAY;
             }
             default -> {
                 return backgroundColor;
