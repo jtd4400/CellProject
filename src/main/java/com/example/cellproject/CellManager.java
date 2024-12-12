@@ -13,7 +13,7 @@ public class CellManager {
     int cellCount;
     int startingCellCount;
     int redCount, greenCount, blueCount;
-    Color backgroundColor = Color.DARKGRAY;
+    Color backgroundColor = Color.DIMGRAY;
 
     //region Getters
     public int getRedCount() {
@@ -203,10 +203,10 @@ public class CellManager {
                 return Color.BLUE;
             }
             case "Green" -> {
-                return Color.GREEN;
+                return Color.LIME;
             }
             case "None" -> {
-                return Color.DARKGRAY;
+                return Color.DIMGRAY;
             }
             default -> {
                 return backgroundColor;
